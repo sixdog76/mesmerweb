@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "WebFetch(domain:www.mesmer.life)",
+      "Bash(copy \"C:\\\\Mesmerweb\\\\Website rain.mp4\" \"C:\\\\Mesmerweb\\\\public\\\\video.mp4\")",
+      "Bash(copy:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial Mesmer landing page setup\n\n- Astro + Tailwind CSS static site\n- Full-screen looping video background\n- Custom HTML5 audio player \\(no autoplay\\)\n- CTA revealed after audio completion\n- Terms and Privacy pages migrated\n- Dark, calm aesthetic with muted teal accents\n- Mobile-first responsive design\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git rm:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nImplement proper CTA flow and platform detection\n\n- Soft CTA scrolls to audio section, focuses play button\n- Conversion CTA appears at 70% audio progress or completion\n- Platform detection routes to iOS/Android stores or /download\n- Added /download fallback page for desktop users\n- Added analytics hooks for audio start, 70%, and store clicks\n- Larger, thumb-friendly audio controls for mobile\n- Removed old CTAButton component\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
+    ]
+  }
+}
