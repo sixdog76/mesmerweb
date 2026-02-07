@@ -55,7 +55,7 @@ import ConversionCTA from '../components/ConversionCTA.astro';
   </section>
 
   <!-- Audio Experience Section -->
-  <section id="audio-section" class="min-h-screen flex flex-col items-center justify-center px-6 py-20">
+  <section id="audio-section" class="flex flex-col items-center justify-center px-6 py-24 scroll-mt-20">
     <div class="max-w-xl mx-auto text-center w-full">
       <!-- Context text -->
       <p class="text-sm text-cream-300 mb-8 opacity-0 transition-opacity duration-700" id="audio-intro">
@@ -98,7 +98,7 @@ import ConversionCTA from '../components/ConversionCTA.astro';
 
   softCta?.addEventListener('click', () => {
     // Smooth scroll to audio section
-    audioSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    audioSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     // After scroll completes, focus play button and show intro
     setTimeout(() => {
