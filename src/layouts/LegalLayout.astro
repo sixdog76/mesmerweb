@@ -1,0 +1,84 @@
+---
+/**
+ * Layout for legal pages (Terms, Privacy)
+ * - Clean, readable typography
+ * - Back link to home
+ * - Consistent with main site aesthetic
+ */
+interface Props {
+  title: string;
+  lastUpdated: string;
+}
+
+const { title, lastUpdated } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>{title} | Mesmer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-dark-900 text-cream-100 font-sans antialiased">
+    <main class="min-h-screen py-16 px-6">
+      <article class="max-w-3xl mx-auto">
+        <!-- Back link -->
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 text-sm text-cream-300 hover:text-cream-100 transition-colors duration-300 mb-12"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back to Mesmer
+        </a>
+
+        <!-- Title -->
+        <h1 class="text-3xl md:text-4xl font-light text-cream-100 mb-4">{title}</h1>
+        <p class="text-sm text-cream-300 mb-12">Last updated: {lastUpdated}</p>
+
+        <!-- Content -->
+        <div class="prose prose-invert prose-cream max-w-none">
+          <slot />
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 pt-8 border-t border-cream-100/10">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-cream-300/60">
+            <div class="flex items-center gap-4">
+              <a href="/Terms" class="hover:text-cream-100 transition-colors duration-300">Terms</a>
+              <a href="/Privacy" class="hover:text-cream-100 transition-colors duration-300">Privacy</a>
+            </div>
+            <span>© 2025 Mesmer LLC</span>
+          </div>
+        </footer>
+      </article>
+    </main>
+
+    <style>
+      /* Prose styling for legal content */
+      .prose h2 {
+        @apply text-xl font-medium text-cream-100 mt-12 mb-4;
+      }
+      .prose p {
+        @apply text-body text-cream-200 mb-6;
+      }
+      .prose ul {
+        @apply list-disc list-inside space-y-2 text-cream-200 mb-6;
+      }
+      .prose a {
+        @apply text-accent hover:text-accent-light underline underline-offset-2;
+      }
+      .prose strong {
+        @apply font-medium text-cream-100;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+---
+/**
+ * Mesmer Landing Page
+ * - Full-screen video background
+ * - Centered hero with headline, subheadline
+ * - Audio player (no autoplay)
+ * - CTA revealed after audio ends
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoBackground from '../components/VideoBackground.astro';
+import AudioPlayer from '../components/AudioPlayer.astro';
+import CTAButton from '../components/CTAButton.astro';
+---
+
+<BaseLayout title="Mesmer | Deep Relaxation & Transformation">
+  <VideoBackground />
+
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-20">
+    <div class="max-w-2xl mx-auto text-center">
+      <!-- Headline -->
+      <h1 class="text-hero font-light text-cream-100 opacity-0 animate-fade-in">
+        Find your stillness
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="mt-6 text-sub text-cream-200 font-light opacity-0 animate-fade-in-delayed">
+        Guided hypnosis for deep relaxation and personal transformation
+      </p>
+
+      <!-- Audio Player -->
+      <div class="mt-16 opacity-0 animate-fade-in-slow">
+        <p class="text-sm text-cream-300 mb-4">Listen to begin</p>
+        <AudioPlayer />
+      </div>
+
+      <!-- CTA (hidden until audio ends) -->
+      <div class="mt-16">
+        <CTAButton href="https://apps.apple.com/app/mesmer" text="Download the App" />
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer with legal links -->
+  <footer class="fixed bottom-0 inset-x-0 py-6 text-center">
+    <div class="flex items-center justify-center gap-6 text-xs text-cream-300/60">
+      <a href="/Terms" class="hover:text-cream-100 transition-colors duration-300">Terms</a>
+      <span class="text-cream-300/30">·</span>
+      <a href="/Privacy" class="hover:text-cream-100 transition-colors duration-300">Privacy</a>
+      <span class="text-cream-300/30">·</span>
+      <span>© 2025 Mesmer LLC</span>
+    </div>
+  </footer>
+</BaseLayout>
