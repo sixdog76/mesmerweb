@@ -1,0 +1,90 @@
+---
+/**
+ * Shop / Products Placeholder Page
+ *
+ * Minimal "coming soon" page that matches the calm aesthetic.
+ * Ready to expand with products (ebooks, courses, etc.)
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoBackground from '../components/VideoBackground.astro';
+---
+
+<BaseLayout title="Shop | Mesmer" description="Guided resources for your transformation journey.">
+  <VideoBackground />
+
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-12">
+    <div class="max-w-xl mx-auto text-center">
+      <!-- Headline -->
+      <h1 class="text-3xl md:text-4xl font-light text-cream-100 opacity-0 animate-fade-in">
+        Something peaceful is coming
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="mt-6 text-lg text-cream-200 font-light opacity-0 animate-fade-in-delayed">
+        Guided ebooks and resources to deepen your practice.
+      </p>
+
+      <!-- Email signup (optional - for launch notification) -->
+      <form id="notify-form" class="mt-12 opacity-0 animate-fade-in-slow">
+        <p class="text-sm text-cream-300 mb-4">Get notified when we launch</p>
+        <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            name="email"
+            placeholder="your@email.com"
+            required
+            class="flex-1 px-4 py-3 bg-dark-700/80 border border-cream-100/10 rounded-lg text-cream-100 placeholder:text-cream-300/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent"
+          />
+          <button
+            type="submit"
+            class="px-6 py-3 bg-accent/20 hover:bg-accent/30 text-cream-100 font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          >
+            Notify me
+          </button>
+        </div>
+        <p id="form-message" class="mt-4 text-sm text-accent hidden"></p>
+      </form>
+
+      <!-- Back link -->
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 mt-16 text-sm text-cream-300 hover:text-cream-100 transition-colors duration-300 opacity-0 animate-fade-in-slow"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Mesmer
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-8 text-center">
+    <div class="flex items-center justify-center gap-6 text-xs text-cream-300/60">
+      <a href="/Terms" class="hover:text-cream-100 transition-colors duration-300">Terms</a>
+      <span class="text-cream-300/30">·</span>
+      <a href="/Privacy" class="hover:text-cream-100 transition-colors duration-300">Privacy</a>
+      <span class="text-cream-300/30">·</span>
+      <span>© 2025 Mesmer LLC</span>
+    </div>
+  </footer>
+</BaseLayout>
+
+<script>
+  // Simple form handling - replace with your email service
+  const form = document.getElementById('notify-form') as HTMLFormElement;
+  const message = document.getElementById('form-message') as HTMLParagraphElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = new FormData(form).get('email');
+
+    // TODO: Connect to email service (ConvertKit, Mailchimp, etc.)
+    console.log('[Shop] Email signup:', email);
+
+    // Show success message
+    message.textContent = "We'll let you know when we launch.";
+    message.classList.remove('hidden');
+    form.reset();
+  });
+</script>
