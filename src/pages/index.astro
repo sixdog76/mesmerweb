@@ -3,11 +3,10 @@
  * Mesmer Landing Page
  *
  * User Flow:
- * 1. Arrive → see calm hero with rain video
- * 2. Click soft CTA → scroll to audio experience
- * 3. Listen to audio → feel calmer
- * 4. Audio reaches 70% or ends → conversion CTA fades in
- * 5. Click CTA → route to appropriate app store
+ * 1. Arrive → see calm hero with rain video + audio player
+ * 2. Press play → listen to audio experience
+ * 3. Audio reaches 70% or ends → conversion CTA fades in
+ * 4. Click CTA → route to appropriate app store
  *
  * Goal: User feels calmer first, then invited to continue — never pushed.
  */
@@ -20,8 +19,8 @@ import ConversionCTA from '../components/ConversionCTA.astro';
 <BaseLayout title="Mesmer | A Moment of Calm">
   <VideoBackground />
 
-  <!-- Hero Section: Full viewport, centered content -->
-  <section id="hero" class="min-h-screen flex flex-col items-center justify-center px-6 relative">
+  <!-- Single-page experience: Hero + Audio in one viewport -->
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-12">
     <div class="max-w-2xl mx-auto text-center">
       <!-- Headline -->
       <h1 class="text-hero font-light text-cream-100 opacity-0 animate-fade-in">
@@ -29,48 +28,25 @@ import ConversionCTA from '../components/ConversionCTA.astro';
       </h1>
 
       <!-- Subheadline -->
-      <p class="mt-6 text-sub text-cream-200 font-light opacity-0 animate-fade-in-delayed">
+      <p class="mt-4 md:mt-6 text-sub text-cream-200 font-light opacity-0 animate-fade-in-delayed">
         A moment of calm, whenever you need it
       </p>
 
-      <!-- Soft CTA: Scrolls to audio, does NOT link to app stores -->
-      <div class="mt-16 opacity-0 animate-fade-in-slow">
-        <button
-          id="soft-cta"
-          type="button"
-          class="px-8 py-4 bg-accent/20 hover:bg-accent/30 text-cream-100 font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
-          aria-label="Start the 3-minute calm reset experience"
-        >
-          Try the 3-Minute Calm Reset
-        </button>
+      <!-- Audio Player Section -->
+      <div id="audio-section" class="mt-12 md:mt-16 opacity-0 animate-fade-in-slow">
+        <p class="text-sm text-cream-300 mb-6" id="audio-intro">
+          Press play when you're ready
+        </p>
+
+        <AudioPlayer />
+
+        <!-- Conversion CTA: Hidden until audio reaches 70% or ends -->
+        <div class="mt-10">
+          <ConversionCTA />
+        </div>
       </div>
     </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-40">
-      <svg class="w-6 h-6 text-cream-100 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-      </svg>
-    </div>
-  </section>
-
-  <!-- Audio Experience Section -->
-  <section id="audio-section" class="flex flex-col items-center justify-center px-6 py-24 scroll-mt-20">
-    <div class="max-w-xl mx-auto text-center w-full">
-      <!-- Context text -->
-      <p class="text-sm text-cream-300 mb-8 opacity-0 transition-opacity duration-700" id="audio-intro">
-        Press play when you're ready
-      </p>
-
-      <!-- Audio Player -->
-      <AudioPlayer />
-
-      <!-- Conversion CTA: Hidden until audio reaches 70% or ends -->
-      <div class="mt-16">
-        <ConversionCTA />
-      </div>
-    </div>
-  </section>
+  </main>
 
   <!-- Footer: Only visible after scrolling -->
   <footer class="py-8 text-center">
@@ -84,44 +60,3 @@ import ConversionCTA from '../components/ConversionCTA.astro';
   </footer>
 </BaseLayout>
 
-<script>
-  /**
-   * Soft CTA behavior:
-   * - Smooth scroll to audio section
-   * - Focus the play button
-   * - Does NOT autoplay
-   */
-  const softCta = document.getElementById('soft-cta');
-  const audioSection = document.getElementById('audio-section');
-  const audioIntro = document.getElementById('audio-intro');
-  const playBtn = document.getElementById('play-btn');
-
-  softCta?.addEventListener('click', () => {
-    // Smooth scroll to audio section
-    audioSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    // After scroll completes, focus play button and show intro
-    setTimeout(() => {
-      audioIntro?.classList.remove('opacity-0');
-      audioIntro?.classList.add('opacity-100');
-      playBtn?.focus();
-    }, 600);
-  });
-
-  // Also reveal intro text when user scrolls to audio section naturally
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          audioIntro?.classList.remove('opacity-0');
-          audioIntro?.classList.add('opacity-100');
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  if (audioSection) {
-    observer.observe(audioSection);
-  }
-</script>
