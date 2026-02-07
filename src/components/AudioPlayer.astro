@@ -1,16 +1,21 @@
 ---
 /**
- * Custom styled HTML5 audio player
- * - Does NOT autoplay
- * - Dispatches 'audioEnded' event when complete
- * - Minimal, matte design
+ * Custom HTML5 Audio Player
+ *
+ * Behavior:
+ * - Does NOT autoplay (critical requirement)
+ * - Dispatches events for analytics:
+ *   - 'audioStarted' when play begins
+ *   - 'audioProgress70' when 70% reached
+ *   - 'audioEnded' when complete
+ * - Large, thumb-friendly controls for mobile
  */
 ---
 
 <div class="w-full max-w-md mx-auto">
   <audio
     id="audio-player"
-    class="w-full"
+    class="hidden"
     preload="metadata"
   >
     <source src="/audio.mp3" type="audio/mpeg" />
@@ -18,37 +23,38 @@
   </audio>
 
   <!-- Custom player UI -->
-  <div class="bg-dark-700/80 backdrop-blur-sm rounded-lg p-5 border border-cream-100/10">
-    <!-- Play/Pause button and progress -->
-    <div class="flex items-center gap-4">
+  <div class="bg-dark-700/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-cream-100/10">
+    <!-- Play/Pause button - large for mobile -->
+    <div class="flex flex-col items-center gap-6">
       <button
         id="play-btn"
         type="button"
-        class="w-12 h-12 flex items-center justify-center rounded-full bg-accent/20 hover:bg-accent/30 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+        class="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center rounded-full bg-accent/20 hover:bg-accent/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-dark-900"
         aria-label="Play audio"
       >
-        <svg id="play-icon" class="w-5 h-5 text-cream-100 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+        <svg id="play-icon" class="w-8 h-8 md:w-10 md:h-10 text-cream-100 ml-1" fill="currentColor" viewBox="0 0 24 24">
           <path d="M8 5v14l11-7z"/>
         </svg>
-        <svg id="pause-icon" class="w-5 h-5 text-cream-100 hidden" fill="currentColor" viewBox="0 0 24 24">
+        <svg id="pause-icon" class="w-8 h-8 md:w-10 md:h-10 text-cream-100 hidden" fill="currentColor" viewBox="0 0 24 24">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
         </svg>
       </button>
 
       <!-- Progress bar -->
-      <div class="flex-1">
+      <div class="w-full">
         <div
           id="progress-container"
-          class="h-1.5 bg-dark-800 rounded-full cursor-pointer overflow-hidden"
+          class="h-2 bg-dark-800 rounded-full cursor-pointer overflow-hidden touch-none"
           role="slider"
           aria-label="Audio progress"
           aria-valuemin="0"
           aria-valuemax="100"
           aria-valuenow="0"
+          tabindex="0"
         >
-          <div id="progress-bar" class="h-full bg-accent rounded-full w-0 transition-all duration-100"></div>
+          <div id="progress-bar" class="h-full bg-accent rounded-full w-0 transition-all duration-150"></div>
         </div>
-        <div class="flex justify-between mt-2 text-xs text-cream-300">
+        <div class="flex justify-between mt-3 text-sm text-cream-300">
           <span id="current-time">0:00</span>
           <span id="duration">0:00</span>
         </div>
@@ -67,8 +73,13 @@
   const currentTimeEl = document.getElementById('current-time') as HTMLSpanElement;
   const durationEl = document.getElementById('duration') as HTMLSpanElement;
 
+  // Track if 70% threshold has been dispatched (only fire once)
+  let has70Fired = false;
+  let hasStartFired = false;
+
   // Format time as M:SS
   function formatTime(seconds: number): string {
+    if (!isFinite(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -90,14 +101,38 @@
     }
   });
 
-  audio.addEventListener('play', () => updatePlayState(true));
+  // Audio started event (analytics hook)
+  audio.addEventListener('play', () => {
+    updatePlayState(true);
+
+    if (!hasStartFired) {
+      hasStartFired = true;
+      window.dispatchEvent(new CustomEvent('audioStarted'));
+
+      // Analytics hook: audio start
+      console.log('[Analytics] Audio started');
+    }
+  });
+
   audio.addEventListener('pause', () => updatePlayState(false));
 
-  // Update progress
+  // Update progress and check for 70% threshold
   audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+
     const percent = (audio.currentTime / audio.duration) * 100;
     progressBar.style.width = `${percent}%`;
+    progressContainer.setAttribute('aria-valuenow', Math.round(percent).toString());
     currentTimeEl.textContent = formatTime(audio.currentTime);
+
+    // Check for 70% completion (fire only once)
+    if (percent >= 70 && !has70Fired) {
+      has70Fired = true;
+      window.dispatchEvent(new CustomEvent('audioProgress70'));
+
+      // Analytics hook: 70% completion
+      console.log('[Analytics] Audio 70% complete');
+    }
   });
 
   // Set duration when loaded
@@ -105,16 +140,35 @@
     durationEl.textContent = formatTime(audio.duration);
   });
 
-  // Click to seek
-  progressContainer.addEventListener('click', (e) => {
+  // Click/touch to seek
+  function handleSeek(e: MouseEvent | TouchEvent) {
     const rect = progressContainer.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     audio.currentTime = percent * audio.duration;
+  }
+
+  progressContainer.addEventListener('click', handleSeek);
+
+  // Touch support for seeking
+  let isSeeking = false;
+  progressContainer.addEventListener('touchstart', (e) => {
+    isSeeking = true;
+    handleSeek(e);
+  });
+  progressContainer.addEventListener('touchmove', (e) => {
+    if (isSeeking) handleSeek(e);
+  });
+  progressContainer.addEventListener('touchend', () => {
+    isSeeking = false;
   });
 
-  // Dispatch custom event when audio ends
+  // Audio ended event
   audio.addEventListener('ended', () => {
     updatePlayState(false);
     window.dispatchEvent(new CustomEvent('audioEnded'));
+
+    // Analytics hook: audio complete
+    console.log('[Analytics] Audio completed');
   });
 </script>
