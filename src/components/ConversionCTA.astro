@@ -4,7 +4,7 @@
  *
  * Behavior:
  * - Hidden by default
- * - Fades in when audio reaches 70% OR ends
+ * - Fades in when audio reaches 30% OR ends
  * - Delay 300-500ms after trigger for calm transition
  * - Routes to app store based on platform detection
  * - Desktop/unknown → /download page
@@ -98,8 +98,8 @@
     }, 400);
   }
 
-  // Trigger CTA reveal at 70% audio progress
-  window.addEventListener('audioProgress70', revealCta);
+  // Trigger CTA reveal at 30% audio progress
+  window.addEventListener('audioProgress30', revealCta);
 
   // Also trigger on audio end (fallback)
   window.addEventListener('audioEnded', revealCta);

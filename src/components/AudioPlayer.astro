@@ -6,6 +6,7 @@
  * - Does NOT autoplay (critical requirement)
  * - Dispatches events for analytics:
  *   - 'audioStarted' when play begins
+ *   - 'audioProgress30' when 30% reached (triggers CTA)
  *   - 'audioProgress70' when 70% reached
  *   - 'audioEnded' when complete
  * - Large, thumb-friendly controls for mobile
@@ -18,7 +19,7 @@
     class="hidden"
     preload="metadata"
   >
-    <source src="https://firebasestorage.googleapis.com/v0/b/mesmer-hypnosis-tt2hj3.firebasestorage.app/o/mesmerweb%2FWebsite%20audio.mp3?alt=media&token=d6998679-b366-4799-af84-cfd3b9a3637c" type="audio/mpeg" />
+    <source src="https://firebasestorage.googleapis.com/v0/b/mesmer-hypnosis-tt2hj3.firebasestorage.app/o/mesmerweb%2FWebsite%20audio2.mp3?alt=media&token=5a0af7e5-df09-4b2c-ba6c-47fc0895f3df" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
@@ -73,7 +74,8 @@
   const currentTimeEl = document.getElementById('current-time') as HTMLSpanElement;
   const durationEl = document.getElementById('duration') as HTMLSpanElement;
 
-  // Track if 70% threshold has been dispatched (only fire once)
+  // Track if thresholds have been dispatched (only fire once)
+  let has30Fired = false;
   let has70Fired = false;
   let hasStartFired = false;
 
@@ -125,12 +127,17 @@
     progressContainer.setAttribute('aria-valuenow', Math.round(percent).toString());
     currentTimeEl.textContent = formatTime(audio.currentTime);
 
+    // Check for 30% completion - show CTA (fire only once)
+    if (percent >= 30 && !has30Fired) {
+      has30Fired = true;
+      window.dispatchEvent(new CustomEvent('audioProgress30'));
+      console.log('[Analytics] Audio 30% complete');
+    }
+
     // Check for 70% completion (fire only once)
     if (percent >= 70 && !has70Fired) {
       has70Fired = true;
       window.dispatchEvent(new CustomEvent('audioProgress70'));
-
-      // Analytics hook: 70% completion
       console.log('[Analytics] Audio 70% complete');
     }
   });

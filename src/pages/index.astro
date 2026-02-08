@@ -5,7 +5,7 @@
  * User Flow:
  * 1. Arrive → see calm hero with rain video + audio player
  * 2. Press play → listen to audio experience
- * 3. Audio reaches 70% or ends → conversion CTA fades in
+ * 3. Audio reaches 30% or ends → conversion CTA fades in
  * 4. Click CTA → route to appropriate app store
  *
  * Goal: User feels calmer first, then invited to continue — never pushed.
@@ -40,7 +40,7 @@ import ConversionCTA from '../components/ConversionCTA.astro';
 
         <AudioPlayer />
 
-        <!-- Conversion CTA: Hidden until audio reaches 70% or ends -->
+        <!-- Conversion CTA: Hidden until audio reaches 30% or ends -->
         <div class="mt-10">
           <ConversionCTA />
         </div>
