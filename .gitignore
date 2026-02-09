@@ -25,5 +25,4 @@ Thumbs.db
 npm-debug.log*
 
 # Large media files (hosted externally)
-public/video.mp4
 public/audio.mp3
