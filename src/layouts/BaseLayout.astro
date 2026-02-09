@@ -2,9 +2,17 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
-const { title, description = "Experience deep relaxation and personal transformation through guided hypnosis." } = Astro.props;
+const {
+  title,
+  description = "Mesmer is a modern hypnosis app with immersive audio sessions for calm, sleep, focus, and emotional regulation. Find stillness whenever you need it.",
+  ogImage = "https://mesmer.life/og-cover.jpg"
+} = Astro.props;
+
+const siteUrl = "https://mesmer.life";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!doctype html>
@@ -12,8 +20,38 @@ const { title, description = "Experience deep relaxation and personal transforma
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MobileApplication",
+      "name": "Mesmer",
+      "operatingSystem": "iOS, Android",
+      "applicationCategory": "HealthApplication",
+      "description": "A modern hypnosis app with immersive audio sessions for calm, sleep, focus, and emotional regulation.",
+      "url": "https://mesmer.life"
+    }
+    </script>
 
     <!-- Preload critical assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
