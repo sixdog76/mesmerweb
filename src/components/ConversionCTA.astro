@@ -4,8 +4,7 @@
  *
  * Behavior:
  * - Hidden by default
- * - Fades in when audio reaches 30% OR ends
- * - Delay 300-500ms after trigger for calm transition
+ * - Fades in 4 seconds after page load
  * - Routes to app store based on platform detection
  * - Desktop/unknown → /download page
  *
@@ -81,28 +80,21 @@
 
   /**
    * Reveal CTA with calm transition
-   * - 400ms delay after trigger
    * - Opacity + subtle translateY animation
    */
   function revealCta() {
     if (ctaRevealed) return;
     ctaRevealed = true;
 
-    // Delay for calm transition
-    setTimeout(() => {
-      if (conversionCta) {
-        conversionCta.classList.remove('opacity-0', 'invisible', 'translate-y-4');
-        conversionCta.classList.add('opacity-100', 'visible', 'translate-y-0');
-        conversionCta.setAttribute('aria-hidden', 'false');
-      }
-    }, 400);
+    if (conversionCta) {
+      conversionCta.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+      conversionCta.classList.add('opacity-100', 'visible', 'translate-y-0');
+      conversionCta.setAttribute('aria-hidden', 'false');
+    }
   }
 
-  // Trigger CTA reveal at 30% audio progress
-  window.addEventListener('audioProgress30', revealCta);
-
-  // Also trigger on audio end (fallback)
-  window.addEventListener('audioEnded', revealCta);
+  // Reveal CTA 4 seconds after page load
+  setTimeout(revealCta, 4000);
 
   // Handle store button click with platform detection
   storeBtn?.addEventListener('click', () => {
