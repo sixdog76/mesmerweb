@@ -1,0 +1,51 @@
+---
+/**
+ * Guide Landing Page (/guide)
+ *
+ * Single-purpose email-capture page offering a free self-hypnosis guide.
+ * One job only: capture an email. No app-store buttons, no other CTAs.
+ * Matches the existing dark/cream theme (see src/pages/download.astro).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignupForm from '../components/SignupForm.astro';
+---
+
+<BaseLayout
+  title="Free Self-Hypnosis Guide | Mesmer"
+  description="A free self-hypnosis guide to help you switch your brain off at night. No experience needed."
+>
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-18">
+    <div class="max-w-xl mx-auto text-center">
+      <!-- Headline -->
+      <h1 class="text-3xl md:text-4xl font-light text-cream-100 mb-6 leading-tight">
+        Can't switch your brain off at night? Start here.
+      </h1>
+
+      <!-- Subhead -->
+      <p class="text-sub text-cream-200 mb-8">
+        A free self-hypnosis guide that helps you quiet a racing mind and drift
+        off — no experience needed.
+      </p>
+
+      <!-- Body copy (placeholder — replace with final copy) -->
+      <div class="text-body text-cream-300 mb-10 space-y-3">
+        <p>
+          [Placeholder] Most nights, the problem isn't that you're not tired —
+          it's that your mind won't stop.
+        </p>
+        <p>
+          [Placeholder] This short guide walks you through a simple self-hypnosis
+          technique you can use in bed tonight.
+        </p>
+        <p>
+          [Placeholder] It takes a few minutes to read and nothing to set up.
+        </p>
+      </div>
+
+      <!-- Signup form -->
+      <div class="text-left">
+        <SignupForm />
+      </div>
+    </div>
+  </main>
+</BaseLayout>

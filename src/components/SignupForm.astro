@@ -1,0 +1,90 @@
+---
+/**
+ * SignupForm
+ *
+ * Email-capture form that POSTs { email } to our own /api/subscribe Pages
+ * Function (which forwards to Kit server-side — the Kit key never reaches the
+ * browser). Shows inline success/error messages and disables the button while
+ * the request is in flight. Vanilla JS, no framework.
+ */
+---
+
+<form id="signup-form" class="flex flex-col gap-3" novalidate>
+  <div class="flex flex-col sm:flex-row gap-3">
+    <input
+      type="email"
+      id="signup-email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder="you@example.com"
+      class="flex-1 px-4 py-3 rounded-xl bg-dark-700 border border-cream-100/10 text-cream-100 placeholder:text-cream-300/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-colors duration-300"
+    />
+    <button
+      type="submit"
+      id="signup-submit"
+      class="px-6 py-3 rounded-xl bg-accent hover:bg-accent-dark text-cream-100 font-medium transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+    >
+      Send me the guide
+    </button>
+  </div>
+
+  <!-- Small print -->
+  <p class="text-sm text-cream-300/70">
+    One email with the guide. Unsubscribe anytime.
+  </p>
+
+  <!-- Inline status message (aria-live so screen readers announce it) -->
+  <p id="signup-message" class="text-sm hidden" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.getElementById('signup-form') as HTMLFormElement | null;
+  const input = document.getElementById('signup-email') as HTMLInputElement | null;
+  const button = document.getElementById('signup-submit') as HTMLButtonElement | null;
+  const message = document.getElementById('signup-message') as HTMLParagraphElement | null;
+
+  const showMessage = (text: string, ok: boolean) => {
+    if (!message) return;
+    message.textContent = text;
+    message.classList.remove('hidden', 'text-accent-light', 'text-red-400');
+    message.classList.add(ok ? 'text-accent-light' : 'text-red-400');
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!input || !button) return;
+
+    const email = input.value.trim();
+    if (!email) {
+      showMessage('Please enter your email address.', false);
+      return;
+    }
+
+    const original = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    message?.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        showMessage('Check your inbox — the guide is on its way.', true);
+        form?.reset();
+      } else {
+        showMessage(data.error || 'Something went wrong. Please try again.', false);
+      }
+    } catch {
+      showMessage('Network error. Please try again.', false);
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  });
+</script>
