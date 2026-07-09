@@ -13,8 +13,12 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
   <>
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
     <script is:inline define:vars={{ gaId }}>
+      // NOTE: define:vars wraps this script in an IIFE, so a bare
+      // `function gtag(){}` would be trapped in local scope and never reach
+      // window. Assign gtag/dataLayer onto window explicitly so custom events
+      // fired from other scripts (e.g. store_tap) can find window.gtag.
       window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = function gtag(){ window.dataLayer.push(arguments); };
       gtag('js', new Date());
       gtag('config', gaId);
     </script>

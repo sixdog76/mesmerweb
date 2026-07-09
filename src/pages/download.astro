@@ -75,7 +75,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const androidBtn = document.getElementById('android-btn');
 
   function trackStoreTap(store: 'apple' | 'google') {
-    (window as any).gtag?.('event', 'store_tap', { store });
+    // transport_type: 'beacon' -> navigator.sendBeacon, so the hit completes
+    // even if the page unloads. Guarded so a missing gtag never throws.
+    (window as any).gtag?.('event', 'store_tap', { store, transport_type: 'beacon' });
   }
 
   iosBtn?.addEventListener('click', () => trackStoreTap('apple'));

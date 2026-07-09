@@ -105,10 +105,12 @@
     // goes to /download where the real store buttons fire their own events.
     // gtag sends via sendBeacon, so this never blocks the redirect below.
     // Guarded so a missing/blocked GA never throws and breaks navigation.
+    // transport_type: 'beacon' -> navigator.sendBeacon, so the hit survives the
+    // same-tab redirect below. Guarded so a missing gtag never throws.
     if (platform === 'ios') {
-      (window as any).gtag?.('event', 'store_tap', { store: 'apple' });
+      (window as any).gtag?.('event', 'store_tap', { store: 'apple', transport_type: 'beacon' });
     } else if (platform === 'android') {
-      (window as any).gtag?.('event', 'store_tap', { store: 'google' });
+      (window as any).gtag?.('event', 'store_tap', { store: 'google', transport_type: 'beacon' });
     }
 
     // Redirect to appropriate store
