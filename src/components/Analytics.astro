@@ -1,0 +1,22 @@
+---
+/**
+ * Google Analytics 4 (gtag.js)
+ *
+ * Loaded in the <head> of every layout so it runs on all pages.
+ * The Measurement ID comes from the PUBLIC_GA_ID env var (never hardcoded).
+ * Renders nothing if the ID is unset, so local/dev builds without a .env stay clean.
+ */
+const gaId = import.meta.env.PUBLIC_GA_ID;
+---
+
+{gaId && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', gaId);
+    </script>
+  </>
+)}

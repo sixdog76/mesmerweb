@@ -67,15 +67,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-  // Analytics hooks for download page
+  // GA4 store-tap tracking for download page.
+  // Links use target="_blank", so navigation is never blocked; gtag sends
+  // the event via sendBeacon in the background. Guarded so it never throws
+  // if GA hasn't loaded (e.g. no PUBLIC_GA_ID, or a blocker is active).
   const iosBtn = document.getElementById('ios-btn');
   const androidBtn = document.getElementById('android-btn');
 
-  iosBtn?.addEventListener('click', () => {
-    console.log('[Analytics] Download page: iOS App Store clicked');
-  });
+  function trackStoreTap(store: 'apple' | 'google') {
+    (window as any).gtag?.('event', 'store_tap', { store });
+  }
 
-  androidBtn?.addEventListener('click', () => {
-    console.log('[Analytics] Download page: Google Play clicked');
-  });
+  iosBtn?.addEventListener('click', () => trackStoreTap('apple'));
+  androidBtn?.addEventListener('click', () => trackStoreTap('google'));
 </script>

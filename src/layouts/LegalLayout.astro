@@ -5,6 +5,8 @@
  * - Back link to home
  * - Consistent with main site aesthetic
  */
+import Analytics from '../components/Analytics.astro';
+
 interface Props {
   title: string;
   lastUpdated: string;
@@ -20,6 +22,9 @@ const { title, lastUpdated } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>{title} | Mesmer</title>
+
+    <!-- Google Analytics 4 -->
+    <Analytics />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

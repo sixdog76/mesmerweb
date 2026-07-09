@@ -101,8 +101,15 @@
     const url = getStoreUrl();
     const platform = detectPlatform();
 
-    // Analytics hook: store redirect click
-    console.log(`[Analytics] Store redirect: ${platform} → ${url}`);
+    // GA4 store-tap event. Only iOS/Android tap through to a store; desktop
+    // goes to /download where the real store buttons fire their own events.
+    // gtag sends via sendBeacon, so this never blocks the redirect below.
+    // Guarded so a missing/blocked GA never throws and breaks navigation.
+    if (platform === 'ios') {
+      (window as any).gtag?.('event', 'store_tap', { store: 'apple' });
+    } else if (platform === 'android') {
+      (window as any).gtag?.('event', 'store_tap', { store: 'google' });
+    }
 
     // Redirect to appropriate store
     window.location.href = url;
