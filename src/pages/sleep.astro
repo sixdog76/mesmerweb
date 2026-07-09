@@ -10,6 +10,7 @@
  * - No video, no audio, no heavy assets — fast by design.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoBackground from '../components/VideoBackground.astro';
 
 // Same store URLs used by the homepage CTA and /download page.
 const APPLE_URL = 'https://apps.apple.com/us/app/mesmer-ai-hypnosis-sleep/id6752903286';
@@ -38,15 +39,10 @@ const steps = [
   title="Mesmer — A hypnosis session made for tonight"
   description="Tell Mesmer what's keeping you up and get a custom hypnosis session written for that specific thing. Your first one's free."
 >
-  <!-- Quiet warm glow — pure CSS, no assets -->
-  <div
-    class="pointer-events-none fixed inset-0 -z-10"
-    aria-hidden="true"
-    style="background: radial-gradient(120% 80% at 50% -10%, rgba(91,138,138,0.16) 0%, rgba(91,138,138,0.05) 30%, transparent 62%);"
-  >
-  </div>
+  <!-- Same looping background video as the homepage -->
+  <VideoBackground />
 
-  <main class="mx-auto max-w-2xl px-6">
+  <main class="relative mx-auto max-w-2xl px-6">
     <!-- HERO + primary CTA (above the fold on mobile) -->
     <section class="flex min-h-[100svh] flex-col justify-center py-10 text-center">
       <h1 class="text-[1.9rem] font-light leading-[1.18] text-cream-100 sm:text-4xl md:text-5xl">
