@@ -1,0 +1,180 @@
+---
+/**
+ * /sleep — dedicated paid-traffic landing page
+ *
+ * Focused, single-purpose page separate from the homepage.
+ * - Reuses BaseLayout so GA4 (Analytics.astro) loads automatically.
+ * - Store buttons reuse the site's store URLs and fire the same
+ *   store_tap GA4 event (transport_type: 'beacon', guarded).
+ * - Mobile-first: store CTA sits above the fold on a phone.
+ * - No video, no audio, no heavy assets — fast by design.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Same store URLs used by the homepage CTA and /download page.
+const APPLE_URL = 'https://apps.apple.com/us/app/mesmer-ai-hypnosis-sleep/id6752903286';
+const GOOGLE_URL = 'https://play.google.com/store/apps/details?id=com.mesmerhypnosis.ambitiousdesignlab';
+
+const steps = [
+  {
+    n: '1',
+    title: 'Say what’s keeping you up',
+    body: 'One sentence, your real problem tonight.',
+  },
+  {
+    n: '2',
+    title: 'Mesmer writes your session',
+    body: 'A custom hypnosis session built around exactly that.',
+  },
+  {
+    n: '3',
+    title: 'Press play and drift off',
+    body: 'The first one’s on us.',
+  },
+];
+---
+
+<BaseLayout
+  title="Mesmer — A hypnosis session made for tonight"
+  description="Tell Mesmer what's keeping you up and get a custom hypnosis session written for that specific thing. Your first one's free."
+>
+  <!-- Quiet warm glow — pure CSS, no assets -->
+  <div
+    class="pointer-events-none fixed inset-0 -z-10"
+    aria-hidden="true"
+    style="background: radial-gradient(120% 80% at 50% -10%, rgba(91,138,138,0.16) 0%, rgba(91,138,138,0.05) 30%, transparent 62%);"
+  >
+  </div>
+
+  <main class="mx-auto max-w-2xl px-6">
+    <!-- HERO + primary CTA (above the fold on mobile) -->
+    <section class="flex min-h-[100svh] flex-col justify-center py-10 text-center">
+      <h1 class="text-[1.9rem] font-light leading-[1.18] text-cream-100 sm:text-4xl md:text-5xl">
+        Tell us what&rsquo;s keeping you up. Get a hypnosis session made for tonight.
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-xl text-base font-light leading-relaxed text-cream-200 sm:text-lg">
+        Not a generic sleep track. You say what&rsquo;s on your mind &mdash; the work thing, the spiral,
+        whatever it is &mdash; and Mesmer writes a hypnosis session for that specific thing.
+        Your first one&rsquo;s free.
+      </p>
+
+      <!-- Primary CTA -->
+      <div class="mt-8">
+        <p class="mb-4 text-sm font-medium tracking-wide text-cream-300">Get your free session.</p>
+
+        <div class="mx-auto flex max-w-sm flex-col gap-3">
+          <a
+            href={APPLE_URL}
+            data-store="apple"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-3 rounded-xl border border-cream-100/10 bg-dark-700 px-6 py-4 transition-colors duration-300 hover:bg-dark-800 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          >
+            <svg class="h-7 w-7 text-cream-100" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            <span class="font-medium text-cream-100">Download on the App Store</span>
+          </a>
+
+          <a
+            href={GOOGLE_URL}
+            data-store="google"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-3 rounded-xl border border-cream-100/10 bg-dark-700 px-6 py-4 transition-colors duration-300 hover:bg-dark-800 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          >
+            <svg class="h-7 w-7 text-cream-100" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/>
+            </svg>
+            <span class="font-medium text-cream-100">Get it on Google Play</span>
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-cream-300/70">
+          Made by a certified hypnotist. No subscription to try it.
+        </p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="border-t border-cream-100/10 py-16">
+      <h2 class="mb-10 text-center text-xl font-light text-cream-100">How it works</h2>
+
+      <ol class="flex flex-col gap-8">
+        {steps.map((step) => (
+          <li class="flex items-start gap-4">
+            <span
+              class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/40 text-sm font-medium text-accent-light"
+            >
+              {step.n}
+            </span>
+            <div>
+              <h3 class="text-base font-medium text-cream-100">{step.title}</h3>
+              <p class="mt-1 text-body text-cream-300">{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- BOTTOM CTA (repeat store buttons) -->
+    <section class="border-t border-cream-100/10 py-16 text-center">
+      <p class="mb-6 text-sub font-light text-cream-100">Your first session is on us.</p>
+
+      <div class="mx-auto flex max-w-sm flex-col gap-3">
+        <a
+          href={APPLE_URL}
+          data-store="apple"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center gap-3 rounded-xl border border-cream-100/10 bg-dark-700 px-6 py-4 transition-colors duration-300 hover:bg-dark-800 focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <svg class="h-7 w-7 text-cream-100" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          <span class="font-medium text-cream-100">Download on the App Store</span>
+        </a>
+
+        <a
+          href={GOOGLE_URL}
+          data-store="google"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center justify-center gap-3 rounded-xl border border-cream-100/10 bg-dark-700 px-6 py-4 transition-colors duration-300 hover:bg-dark-800 focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <svg class="h-7 w-7 text-cream-100" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/>
+          </svg>
+          <span class="font-medium text-cream-100">Get it on Google Play</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-cream-100/10 py-8 text-center">
+      <div class="flex items-center justify-center gap-4 text-xs text-cream-300/60">
+        <a href="/Terms" class="transition-colors duration-300 hover:text-cream-100">Terms</a>
+        <span class="text-cream-300/30">&middot;</span>
+        <a href="/Privacy" class="transition-colors duration-300 hover:text-cream-100">Privacy</a>
+        <span class="text-cream-300/30">&middot;</span>
+        <span>&copy; 2025 Mesmer LLC</span>
+      </div>
+    </footer>
+  </main>
+</BaseLayout>
+
+<script>
+  // Reuse the site's store_tap tracking. One handler covers every store
+  // button on the page (top + bottom) via the data-store attribute.
+  // transport_type: 'beacon' so the hit survives navigation; guarded so a
+  // missing/blocked gtag never throws.
+  const storeLinks = document.querySelectorAll<HTMLAnchorElement>('a[data-store]');
+
+  storeLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const store = link.dataset.store; // 'apple' | 'google'
+      (window as any).gtag?.('event', 'store_tap', { store, transport_type: 'beacon' });
+    });
+  });
+</script>
