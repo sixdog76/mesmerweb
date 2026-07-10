@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects
+# Lowercase alias for the case-sensitive /Privacy route.
+/privacy  /Privacy  301
