@@ -1,0 +1,70 @@
+---
+/**
+ * /delete-account — account & data deletion instructions
+ *
+ * Compliance/support page (required by the app stores for accounts that
+ * can be created in-app). Plain, document-like content.
+ *
+ * Uses BaseLayout so styling tokens, fonts, and GA4 apply consistently.
+ * Prose styling mirrors the Terms/Privacy pages for visual consistency.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Delete Your Mesmer Account & Data"
+  description="How to delete your account and personal data from Mesmer: Hypnosis, Sleep & Calm."
+>
+  <main class="min-h-screen px-6 py-16">
+    <article class="mx-auto max-w-2xl">
+      <h1 class="mb-6 text-3xl font-light text-cream-100 md:text-4xl">
+        Delete Your Mesmer Account &amp; Data
+      </h1>
+
+      <p class="mb-6 text-body text-cream-200">
+        This page explains how to delete your account and personal data from Mesmer: Hypnosis,
+        Sleep &amp; Calm, published by Mesmer LLC.
+      </p>
+
+      <h2 class="mb-4 mt-12 text-xl font-medium text-cream-100">How to delete your account</h2>
+      <ol class="mb-6 list-decimal space-y-2 pl-6 text-body text-cream-200 marker:text-cream-300">
+        <li>Open the Mesmer app.</li>
+        <li>Go to the Profile menu.</li>
+        <li>Tap Delete Account.</li>
+        <li>Confirm &mdash; your account and associated data are deleted.</li>
+      </ol>
+
+      <h2 class="mb-4 mt-12 text-xl font-medium text-cream-100">What gets deleted</h2>
+      <ul class="mb-6 list-disc space-y-2 pl-6 text-body text-cream-200 marker:text-cream-300">
+        <li>Device or other identifiers used for analytics;</li>
+        <li>App activity and usage data;</li>
+        <li>Session and preference data tied to your account.</li>
+      </ul>
+
+      <h2 class="mb-4 mt-12 text-xl font-medium text-cream-100">What may be retained</h2>
+      <ul class="mb-6 list-disc space-y-2 pl-6 text-body text-cream-200 marker:text-cream-300">
+        <li>
+          Purchase and subscription records may be retained where required for legal, tax,
+          accounting, or fraud-prevention purposes or by the app stores that process payments;
+        </li>
+        <li>Anonymized or aggregated data that can no longer be linked to you.</li>
+      </ul>
+
+      <h2 class="mb-4 mt-12 text-xl font-medium text-cream-100">Third-party services</h2>
+      <p class="mb-6 text-body text-cream-200">
+        Some data is processed by RevenueCat (subscription management) and Mixpanel (analytics);
+        deleting your account removes your associated data from these services in accordance with
+        their deletion processes.
+      </p>
+
+      <h2 class="mb-4 mt-12 text-xl font-medium text-cream-100">Need help?</h2>
+      <p class="mb-6 text-body text-cream-200">
+        If you have any questions or need help deleting your account, email us at
+        <a
+          href="mailto:[SUPPORT_EMAIL]"
+          class="text-accent underline underline-offset-2 hover:text-accent-light"
+        >[SUPPORT_EMAIL]</a>.
+      </p>
+    </article>
+  </main>
+</BaseLayout>
